@@ -1,4 +1,5 @@
 <template>
+  {{ state }}
     <div id="mypage_wrap">
       <div id="left_bar">
         <div id="profile_area">
@@ -27,7 +28,7 @@
             <tr>
               <td align="center">제목</td>
               <td>
-                <input type="text" placeholder="제목을 입력해주세요." />
+                <input type="text" placeholder="제목을 입력해주세요." v-model="state.qna.qnaTitle"/>
               </td>
             </tr>
             <tr>
@@ -37,12 +38,13 @@
                   name=""
                   id=""
                   placeholder="문의하실 내용을 입력해주세요."
+                  v-model="state.qna.content"
                 ></textarea>
               </td>
             </tr>
           </table>
           <div id="btn_wrap">
-            <button>수정</button>
+            <button @click="submit()">수정</button>
             <button><a href="/cs">취소</a></button>
           </div>
         </div>
@@ -51,9 +53,44 @@
   </template>
   
   <script>
+  import { reactive } from '@vue/runtime-core';
+  import axios from 'axios';
+  import { useRoute } from 'vue-router';
+  //import router from "@/router";
   export default {
     setup() {
-      return {};
+      const route = useRoute();
+
+
+      const state = reactive({
+          no      : Number( route.query.no ),
+          qna:"",
+      });
+
+      const load=() =>{
+        axios.get(`/api/mypage/inquire/detail?no=${state.no}`).then((res)=>{
+          console.log(res.data);
+          state.qna = res.data;
+        })
+      };
+      
+      load();
+
+      // 업데이트
+      // const submit = () => {
+      //   axios.post('/api/qna',state.form).then((res)=>{
+      //     console.log(res);
+      //     window.alert("수정성공");
+      //     router.push({path: "/mypage/inquire"});
+      //   }).catch(()=>{
+      //   window.alert("수정실패");
+      //   })
+      // }
+
+
+
+
+      return {state};
     },
   };
   </script>

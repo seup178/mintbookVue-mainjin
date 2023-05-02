@@ -86,17 +86,7 @@
         };
         load();
 
-        // // const handleData = async () => {
-        // //     const url = `/mypage/inquire/detail?no=${state.no}`  
-        // //     const{data} =  await axios.get(url);
-        // //     console.log(data);
-        // //     if(data.status === 200) {
-        // //         state.rows  = data.result;
-        // //     }
-        // // };
-        // onMounted(() => {
-        //     handleData()
-        // });
+
 
       return {state};
       },

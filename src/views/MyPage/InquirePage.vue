@@ -29,10 +29,10 @@
         <tbody>
           <tr v-for="(item,idx) in state.qna" :key="idx" style="width: 80%;">
           <td class="Q">Q.</td>
-          <td @click="handleDetail(item.id)" style="width: 300px;">{{ item.qnaTitle }}</td>
+          <td @click="handleDetail(item.id)" style="width: 300px; cursor: pointer; "   >{{ item.qnaTitle }}</td>
           <td>{{ item.reg_date }}</td>
           <td>
-            <button class="table_btn" >수정</button>
+            <button class="table_btn" @click="handleedit(item.id)">수정</button>
             <button class="table_btn" @click="handledelete(item.id)">삭제</button>
           </td>
         </tr>
@@ -68,10 +68,12 @@ export default {
       router.push({path:'/mypage/inquire/detail', query:{no:no}})
     }
 
-    
+    const handleedit = (no) => {
+      router.push({path:'/mypage/inquire/edit', query:{no:no}})
+    }
 
 
-    return {state,handleDetail};
+    return {state,handleDetail, handleedit};
   },
 };
 </script>
