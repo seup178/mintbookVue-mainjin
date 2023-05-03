@@ -1,4 +1,5 @@
 <template>
+    {{ state }}
     <div id="total_wrap">
         <div id="divide_wrap">
             <div id="nav_wrap">
@@ -6,35 +7,39 @@
             </div>
             <div id="content_wrap">
                 <p id="maintitle">1:1문의 상세</p>
-                <button id="edit">수정</button>
                 <table class="table">
                     <tbody>
                         <tr>
                             <th scope="row">1:1문의 번호</th>
-                            <td colspan="3">12</td>
+                            <td colspan="3">{{state.qna.id}}</td>
                         </tr>
                         <tr>
                             <th scope="row">아이디</th>
-                            <td>user1</td>
-                            <th scope="row">작성자</th>
-                            <td>0223-02-23</td>
+                            <td>{{ state.qna.writer }}</td>
+                            <th scope="row">수정날짜</th>
+                            <td>{{reg_date}}</td>
                         </tr>
                         <tr>
                             <th scope="row" >제목</th>
-                            <td td colspan="3">방주</td>
+                            <td td colspan="3">{{ state.qna.qnaTitle }}</td>
                         </tr>
                         <tr>
                             <th scope="row"  style="height: 100px;">내용</th>
-                            <td td colspan="3">13</td>
+                            <td td colspan="3">{{ state.qna.content }}</td>
                         </tr>
                         <tr>
                             <th scope="row" style="height: 200px;">답변</th>
-                            <td colspan="3">답변답변답변답변답변답변답변답변답변답변답변답변답변답변답변답변답변답변</td>
+                            <td colspan="3">{{ state.qna.reply }}</td>
                         </tr>
                     </tbody>
                 </table>
-                <button id="dap">답변 등록</button>
-                <button id="dap">답변 수정</button>
+                <!--<button id="dap" @click="handeledit()">답변 등록</button>
+                <button id="dap">답변 수정</button> -->
+                답변 작성/수정하기
+                <button id="dap"  @click="submit()">확인</button>
+                <div>
+                    <textarea class="dap1" v-model="state.qnadto.reply"></textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -43,6 +48,10 @@
 <script>
 import { reactive } from 'vue';
 import AdminMenuPage from '../../components/AdminMenuPage.vue';
+import axios from 'axios';
+import { useRoute } from 'vue-router';
+import router from '@/router';
+
 
 export default {
     components:{
@@ -50,11 +59,41 @@ export default {
     },
 
     setup () {
+        const route = useRoute();
+        
         const state = reactive({
-            num:["1","2","3","4","5","6","7","8","9","10"]
-        })
+            no      : Number( route.query.no ),
+            qna:"",
+            qnadto:{
+                reply:""
+            }
+        });
 
-        return {state}
+        
+
+        const load=() =>{
+          axios.get(`/api/mypage/inquire/detailadmin?no=${state.no}`).then((res)=>{
+            console.log(res.data);
+            state.qna = res.data;
+          })
+        };
+        load();
+       
+        const submit = () => {
+        axios.post(`/api/qna/reply/${state.no}`,state.qnadto).then((res)=>{
+          console.log(res);
+          window.alert("답변완료");
+          router.push({path: "/admin/cs"});
+        }).catch(()=>{
+        window.alert("답변실패");
+        })
+      }
+
+
+
+
+
+        return {state,submit}
     }
 }
 </script>
@@ -133,6 +172,10 @@ import
     #dap{
         margin-left: 50px;
         float: right;
+    }
+    .dap1{
+        width: 1200px;
+        height: 300px;
     }
     
 

@@ -56,6 +56,7 @@
   import { reactive } from '@vue/runtime-core';
   import axios from 'axios';
   import { useRoute } from 'vue-router';
+  import router from '@/router';
   //import router from "@/router";
   export default {
     setup() {
@@ -64,7 +65,11 @@
 
       const state = reactive({
           no      : Number( route.query.no ),
-          qna:"",
+          qna:{
+            qnaTitle:"",
+            content:""
+          },
+          
       });
 
       const load=() =>{
@@ -76,21 +81,21 @@
       
       load();
 
-      // 업데이트
-      // const submit = () => {
-      //   axios.post('/api/qna',state.form).then((res)=>{
-      //     console.log(res);
-      //     window.alert("수정성공");
-      //     router.push({path: "/mypage/inquire"});
-      //   }).catch(()=>{
-      //   window.alert("수정실패");
-      //   })
-      // }
+      
+      const submit = () => {
+        axios.put(`/api/qna/edit/${state.no}`,state.qna).then((res)=>{
+          console.log(res);
+          window.alert("수정성공");
+          router.push({path: "/mypage/inquire"});
+        }).catch(()=>{
+        window.alert("수정실패");
+        })
+      }
 
 
 
 
-      return {state};
+      return {state,submit};
     },
   };
   </script>

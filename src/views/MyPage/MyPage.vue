@@ -50,10 +50,24 @@
 </template>
 
 <script>
+import axios from 'axios';
+import router from '@/router';
 export default {
   setup() {
+
+    const logincheck=()=>{
+            axios.post('/api/members/logincheck').then((res)=>{
+                console.log(res);
+                //성공적으로 로그인
+            }).catch(()=>{
+                router.push({path: "/login"});
+            })
+        }
+        logincheck();
     return {};
   },
+
+  
 };
 </script>
 

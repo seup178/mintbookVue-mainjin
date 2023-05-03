@@ -49,6 +49,16 @@ import axios from "axios";
 import { useRoute, useRouter } from 'vue-router';
 export default {
   setup() {
+
+    const logincheck=()=>{
+      axios.post('/api/members/logincheck').then((res)=>{
+        console.log(res);
+        //성공적으로 로그인
+      }).catch(()=>{
+        router.push({path: "/login"});
+      })
+    }
+        logincheck();
     const router    = useRouter();
     const route     =useRoute();
     const state = reactive({
@@ -73,7 +83,21 @@ export default {
     }
 
 
-    return {state,handleDetail, handleedit};
+
+
+    const handledelete = (no) => {
+      axios.delete(`/api/qna/delete/${no}`).then((res)=>{
+          console.log(res);
+          window.alert("삭제성공");
+          router.push({path: "/mypage/inquire"});
+        }).catch(()=>{
+        window.alert("삭제실패");
+        })
+      }
+    
+
+
+    return {state,handleDetail, handleedit, handledelete};
   },
 };
 </script>

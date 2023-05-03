@@ -1,4 +1,5 @@
 <template>
+    {{ state }}
     <div id="total_wrap">
         <div id="divide_wrap">
             <div id="nav_wrap">
@@ -9,15 +10,12 @@
                 <label>
                     <select>
                         <option value="title">회원관리</option>
-                        <option value="author">저자명</option>
-                        <option value="isbn">ISBN</option>
-                        <option value="publisher">출판사</option>
                     </select>
                 </label>
                 <label>
                     <input type="text">
                 </label>
-                <button id="search" @click="BookSearch()">검색</button>
+                <button id="search" @click="UserSearch()">검색</button>
                 <button id="register">도서등록</button>
                 <table class="table">
                     <thead>
@@ -30,17 +28,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="tmp of state.num" :key="tmp">
-                            <th scope="row">{{ tmp }}</th>
-                            <td>정제승의 과학콘서트 재입고 문의</td>
-                            <td>user1</td>
-                            <td>1995-04-13</td>
-                            <td>대기중</td>    
+                        <tr v-for="(item,idx) in state.qna" :key="idx" @click="handleDetail(item.id)" style="cursor: pointer;">
+                            <th scope="row">{{ item.id }}</th>
+                            <td>{{ item.qnaTitle }}</td>
+                            <td>{{ item.writer }}</td>
+                            <td>{{ item.reg_date }}</td>
+                            <td v-if="item.reply != null">완료</td>
+                            <td v-else >대기중</td>
+                            
                         </tr>
                     </tbody>
                 </table>
                 <div id="pagination">
-                    <el-pagination layout="prev, pager, next" :total="50" />
+                    <el-pagination @current-change="handlePage" small layout="prev, pager, next"  :total="board.total"/>
                 </div>
             </div>
         </div>
@@ -50,7 +50,9 @@
 <script>
 import { reactive } from 'vue';
 import AdminMenuPage from '../../components/AdminMenuPage.vue';
-import router from '@/router';
+//import router from '@/router';
+import axios from 'axios';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
     components:{
@@ -58,17 +60,54 @@ export default {
     },
 
     setup () {
+        const router    = useRouter();
+        const route     =useRoute();
         const state = reactive({
-            num:["1","2","3","4","5","6","7","8","9","10"]
-        })
+            qna:[],
+            no  : Number(route.query.no)
+        });
+        const board = reactive({
+            total : 0, //전체 게시물 수
+            rows : null, //게시물 내용
+            page : 1, //페이지정보
+            text : '', //검색어 정보
+        });
 
-        const BookSearch=()=>{
-            router.push("/admin/book/search");
+        const handlePage = (page) =>{     
+            board.page= page; //상태변수값 변경
+            axios.get(`/api/qna/all?page=${board.page}`).then((res)=>{
+                console.log(res.data);
+                state.qna = res.data;
+            })            
         }
+
+        // const UserSearch=()=>{
+            
+        // }
+
+        const load=() =>{
+            //axios.get('/api/qna/all').then((res)=>{
+            //    console.log(res.data);
+            //   state.qna = res.data;
+            //})     
+            axios.get('/api/qna/allcnt').then((res)=>{
+                console.log(res.data);
+                board.total = res.data;
+            })       
+            handlePage(1);
+        };
+        load();
+        const handleDetail = (no) => {
+            router.push({path:'/admin/cs/detail', query:{no:no}})
+        }
+        
 
         return {
             state,
-            BookSearch
+            board,
+            //BookSearch,
+            handlePage,
+            handleDetail
         }
     }
 }

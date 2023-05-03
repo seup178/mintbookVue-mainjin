@@ -1,5 +1,4 @@
 <template>
-  {{ state }}
     <div id="mypage_wrap">
       <div id="left_bar">
         <div id="profile_area">
@@ -57,7 +56,7 @@
             </tr>
           </table>
           <div id="btn_wrap">
-            <button><a href="/cs">삭제</a></button>
+            <button @click="submit()"><a href="/cs">삭제</a></button>
           </div>
         </div>
 
@@ -68,6 +67,7 @@
   import { reactive } from '@vue/runtime-core';
   import axios from 'axios';
   import { useRoute } from 'vue-router';
+  import router from '@/router';
   export default {
     setup() {
       const route = useRoute();
@@ -86,9 +86,19 @@
         };
         load();
 
+        const submit = () => {
+        axios.delete(`/api/qna/delete/${state.no}`).then((res)=>{
+          console.log(res);
+          window.alert("삭제성공");
+          router.push({path: "/mypage/inquire"});
+        }).catch(()=>{
+        window.alert("수정실패");
+        })
+      }
 
 
-      return {state};
+
+      return {state,submit};
       },
   };
   </script>
