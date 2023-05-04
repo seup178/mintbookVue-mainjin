@@ -13,14 +13,14 @@
                     </select>
                 </label>
                 <label>
-                    <input type="text">
+                    <input type="text" v-model="state.search">
                 </label>
                 <button id="search" @click="UserSearch()">검색</button>
                 <button id="register">도서등록</button>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">No.</th>
+                            <th scope="col">ID.</th>
                             <th scope="col">제목</th>
                             <th scope="col">작성한 회원 아이디</th>
                             <th scope="col">작성 날짜</th>
@@ -29,7 +29,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(item,idx) in state.qna" :key="idx" @click="handleDetail(item.id)" style="cursor: pointer;">
-                            <th scope="row">{{ item.id }}</th>
+                            <th scope="row">{{ (idx+1 )+((board.page-1)*10) }}</th>
                             <td>{{ item.qnaTitle }}</td>
                             <td>{{ item.writer }}</td>
                             <td>{{ item.reg_date }}</td>
@@ -64,7 +64,8 @@ export default {
         const route     =useRoute();
         const state = reactive({
             qna:[],
-            no  : Number(route.query.no)
+            no  : Number(route.query.no),
+            search:""
         });
         const board = reactive({
             total : 0, //전체 게시물 수
@@ -81,9 +82,13 @@ export default {
             })            
         }
 
-        // const UserSearch=()=>{
-            
-        // }
+        const UserSearch=()=>{
+            axios.get(`/api/qna/usersearch?search=${state.search}`).then((res)=>{
+               console.log(res.data);
+              state.qna = res.data;
+              board.total = 0;
+            })  
+        }
 
         const load=() =>{
             //axios.get('/api/qna/all').then((res)=>{
@@ -107,7 +112,8 @@ export default {
             board,
             //BookSearch,
             handlePage,
-            handleDetail
+            handleDetail,
+            UserSearch
         }
     }
 }

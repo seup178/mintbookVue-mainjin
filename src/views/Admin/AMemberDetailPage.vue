@@ -1,4 +1,5 @@
 <template>
+    {{ state }}
     <div id="total_wrap">
         <div id="divide_wrap">
             <div id="nav_wrap">
@@ -6,31 +7,31 @@
             </div>
             <div id="content_wrap">
                 <p id="maintitle">회원 상세</p>
-                <button id="edit">회원삭제</button>
+                <button id="edit" @click="submit()">회원삭제</button>
                 <p>회원정보</p>
                 <table class="table">
                     <tbody>
                         <tr>
                             <th scope="row">아이디</th>
-                            <td >user1</td>
+                            <td >{{state.member.email}}</td>
                             <th scope="row">이름</th>
-                            <td >홍길동</td>
+                            <td >{{ state.member.name }}</td>
                         </tr>
                         <tr>
                             <th scope="row">주소</th>
-                            <td colspan="3">부산광역시 부산진구 중앙대로 668 (A1프라자6층)</td>
+                            <td colspan="3">{{ state.member.address }}</td>
                         </tr>
                         <tr>
                             <th scope="row">이메일</th>
-                            <td > user1@user1.com</td>
+                            <td >{{ state.member.email }}</td>
                             <th scope="row">휴대폰번호</th>
-                            <td >010-1234-1234</td>
+                            <td >{{ state.member.phone }}</td>
                         </tr>
                         <tr>
                             <th scope="row">성별</th>
-                            <td >남</td>
+                            <td >{{ state.member.gender }}</td>
                             <th scope="row">가입일</th>
-                            <td >2023년 03월 31일 금 11시 44분</td>
+                            <td >{{ state.member.joinDate }}</td>
                         </tr>
                         
                     </tbody>
@@ -123,7 +124,11 @@
 </template>
 
 <script>
+import { reactive } from 'vue';
+import { useRoute } from 'vue-router';
 import AdminMenuPage from '../../components/AdminMenuPage.vue';
+import axios from 'axios';
+import router from '@/router';
 
 export default {
     components:{
@@ -131,8 +136,32 @@ export default {
     },
 
     setup () {
+        const route = useRoute();
 
-        return {}
+        const state = reactive({
+            no  : Number( route.query.no ),
+            member:""
+        })
+
+        const load=() =>{
+          axios.get(`/api/member/detail?no=${state.no}`).then((res)=>{
+            console.log(res.data);
+            state.member = res.data;
+          })
+        };
+        load();
+
+        const submit = () => {
+            axios.delete(`/api/member/delete/${state.no}`).then((res)=>{
+                console.log(res);
+                window.alert("삭제성공");
+                router.push({path: "/admin/member"});
+            }).catch(()=>{
+            window.alert("수정실패");
+            })
+        }
+
+        return {state,submit}
     }
 }
 </script>

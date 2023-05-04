@@ -1,4 +1,5 @@
 <template>
+  {{  state  }}
   <div id="total_wrap">
     <div id="divide_wrap">
       <div id="nav_wrap">
@@ -8,41 +9,37 @@
         <p id="maintitle">회원관리</p>
         <label>
           <select>
-            <option value="title">아이디</option>
-            <option value="author">저자명</option>
-            <option value="isbn">ISBN</option>
-            <option value="publisher">출판사</option>
+            <option value="title">이메일</option>
           </select>
         </label>
         <label>
-          <input type="text" />
+          <input type="text" v-model="state.search"/>
         </label>
-        <button id="search" @click="BookSearch()">검색</button>
+        <button id="search" @click="UserSearch()">검색</button>
         <button id="register">도서등록</button>
         <table class="table">
           <thead>
             <tr>
               <th scope="col">No.</th>
-              <th scope="col">아이디</th>
+              <th scope="col">이메일</th>
               <th scope="col">이름</th>
               <th scope="col">생년월일</th>
-              <th scope="col">이메일</th>
+              
             </tr>
           </thead>
           <tbody>
-            <tr v-for="tmp of state.num" :key="tmp">
-              <th scope="row">{{ tmp }}</th>
-              <td>1</td>
-              <td>user1</td>
-              <td>홍길동</td>
-              <td>1995-04-13</td>
-              <td>user@user.com</td>
+            <tr v-for="(member,tmp) in state.member" :key="tmp" style="cursor: pointer;" @click="handleDetail(member.id)">
+              <th scope="row">{{ (tmp+1)+((board.page-1)*10) }}</th>
+              <td>{{ member.email }}</td>
+              <td>{{ member.name }}</td>
+              <td>{{ member.birth }}</td>
+            
             
             </tr>
           </tbody>
         </table>
         <div id="pagination">
-          <el-pagination layout="prev, pager, next" :total="50" />
+          <el-pagination @current-change="handlePage" small layout="prev, pager, next"  :total="board.total"/>
         </div>
       </div>
     </div>
@@ -52,7 +49,9 @@
 <script>
 import { reactive } from "vue";
 import AdminMenuPage from "../../components/AdminMenuPage.vue";
-import router from "@/router";
+
+import axios from 'axios';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -60,17 +59,66 @@ export default {
   },
 
   setup() {
+    const router    = useRouter();
+    const route     =useRoute();
     const state = reactive({
-      num: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      member:[],
+      search:"",
+      no  : Number(route.query.no)
+    });
+    const board = reactive({
+      total : 0, //전체 게시물 수
+      rows : null, //게시물 내용
+      page : 1, //페이지정보
+      text : '', //검색어 정보
     });
 
-    const BookSearch = () => {
-      router.push("/admin/book/search");
-    };
+    const load=() =>{
+      axios.get(`/api/member/all?page=${board.page}`).then((res)=>{
+        console.log(res.data);
+        state.member = res.data;
+        }) 
+    }
+    load();
+
+    const page=()=>{
+      axios.get('/api/member/allcnt').then((res)=>{
+        console.log(res.data);
+        board.total = res.data;
+      })
+    }
+    page();
+
+    
+
+    const handlePage = (page) =>{     
+      board.page= page; //상태변수값 변경
+      axios.get(`/api/member/all?page=${board.page}`).then((res)=>{
+        console.log(res.data);
+        state.member = res.data;
+      })            
+    }
+
+    const UserSearch=()=>{
+      axios.get(`/api/member/usersearch?search=${state.search}`).then((res)=>{
+        console.log(res.data);
+        state.member = res.data;
+        board.total = 0;
+      })  
+    }
+
+    const handleDetail = (no) => {
+      router.push({path:'/admin/member/detail', query:{no:no}})
+    }
+
+
 
     return {
       state,
-      BookSearch,
+      board,
+      handlePage,
+      UserSearch,
+      handleDetail
     };
   },
 };

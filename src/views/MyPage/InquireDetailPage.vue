@@ -48,7 +48,7 @@
                 <textarea
                   name=""
                   id=""
-                  placeholder="답변하실 내용을 입력해주세요."
+                  placeholder=""
                   v-model="state.qna.reply"
                   readonly
                 ></textarea>
