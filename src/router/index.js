@@ -33,6 +33,16 @@ import MyReviewList from "../views/MyPage/MyReviewList";
 import AlimiPage from "../views/MyPage/AlimiPage";
 
 
+import MyPickPage from "../views/MyPage/MyPickPage";
+import MyCashPointPage from "../views/MyPage/MyCashPointPage";
+
+import MyReviewDetailPage from "../views/MyPage/MyReviewDetailPage";
+
+
+
+
+
+
 
 
 
@@ -66,6 +76,25 @@ import ACsPage from "../views/Admin/ACsPage";
 import ACsDetailPage from "../views/Admin/ACsDetailPage";
 import ACsEditPage from "../views/Admin/ACsEditPage";
 import ACsRegisterPage from "../views/Admin/ACsRegisterPage";
+
+
+
+import ANoticePage from "../views/Admin/ANoticePage";
+import ANoticeRegisterPage from "../views/Admin/ANoticeRegisterPage";
+import ANoticeDetailPage from "../views/Admin/ANoticeDetailPage";
+import ANoticeEditPage from "../views/Admin/ANoticeEditPage";
+import AReviewPage from "../views/Admin/AReviewPage";
+import AReviewDetailPage from "../views/Admin/AReviewDetailPage";
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -222,6 +251,26 @@ const routes = [
     name: "noticedetail",
     component: NoticeDetailPage,
   },
+  {
+    path: "/mypage/mypick",
+    name: "mypick",
+    component: MyPickPage,
+  },
+  {
+    path: "/mypage/cashpoint",
+    name: "cashpoint",
+    component: MyCashPointPage,
+  },
+  {
+    path: "/mypage/review/list",
+    name: "myreviewlist",
+    component: MyReviewList,
+  },
+  {
+    path: "/mypage/review/detail",
+    name: "myreviewdetail",
+    component: MyReviewDetailPage,
+  },
 
 
 
@@ -346,6 +395,36 @@ const routes = [
     path: "/admin/member/detail",
     name: "adminmemberdetail",
     component: AMemberDetailPage,
+  },
+  {
+    path: "/admin/notice",
+    name: "adminnotice",
+    component: ANoticePage,
+  },
+  {
+    path: "/admin/notice/register",
+    name: "adminnoticeregister",
+    component: ANoticeRegisterPage,
+  },
+  {
+    path: "/admin/notice/detail",
+    name: "adminnoticedetail",
+    component: ANoticeDetailPage,
+  },
+  {
+    path: "/admin/notice/edit",
+    name: "adminnoticeedit",
+    component: ANoticeEditPage,
+  },
+  {
+    path: "/admin/review",
+    name: "adminreview",
+    component: AReviewPage,
+  },
+  {
+    path: "/admin/review/detail",
+    name: "adminreviewdetail",
+    component: AReviewDetailPage,
   },
 ];
 

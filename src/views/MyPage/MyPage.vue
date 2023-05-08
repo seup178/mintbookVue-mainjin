@@ -11,12 +11,12 @@
       </div>
       <div id="menu_area">
         <ul>
-          <li><a href="/mypage/mypage" id="current">구매내역</a></li>
-          <li><a href="/mypage/choice">찜</a></li>
+          <li><a href="/mypage/mypage">구매내역</a></li>
+          <li><a href="/mypage/mypick">찜</a></li>
           <li><a href="/mypage/cashpoint">캐시/포인트</a></li>
           <li><a href="/mypage/inquire">1:1 문의내역</a></li>
-          <li><a href="/mypage/myreviewlist">리뷰내역</a></li>
-          <li><a href="/mypage/alimi">알리미</a></li>
+          <li><a href="/mypage/review/list">리뷰내역</a></li>
+          <li><a href="/mypage/alimi" id="current">알리미</a></li>
           <li><a href="/mypage/myinfoedit">회원정보수정</a></li>
         </ul>
       </div>
@@ -132,5 +132,6 @@ a {
 
 .btn{
   width: 114px;
+  border: 1px solid #b8b6b6;
 }
 </style>
