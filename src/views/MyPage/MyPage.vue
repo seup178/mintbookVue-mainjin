@@ -1,4 +1,5 @@
 <template>
+  {{ state }}
   <div id="mypage_wrap">
     <div id="left_bar">
       <div id="profile_area">
@@ -35,12 +36,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr >
-            <td>2023-03-31</td>
-            <td>001-A1093511</td>
-            <td>14500</td>
-            <td>방주 외2권</td>
-            <td>배송중</td>
+          <tr v-for="(item,idx) in state.order" @click="handleDetail(item.id,state.id)" :key="idx">
+            <td>{{ item.orderDate }}</td>
+            <td>{{ item.orderNum }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.product }}</td>
+            <td>{{ item.status }}</td>
             <td><button class="btn">배송조회</button></td>
           </tr>
         </tbody>
@@ -51,20 +52,44 @@
 
 <script>
 import axios from 'axios';
-import router from '@/router';
+
+import { reactive } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 export default {
   setup() {
+    const router    = useRouter();
+    const route     =useRoute();
+    const state = reactive({
+      order:[],
+      no  : Number(route.query.no),
+      id  : ""
+    })
 
     const logincheck=()=>{
-            axios.post('/api/members/logincheck').then((res)=>{
-                console.log(res);
-                //성공적으로 로그인
-            }).catch(()=>{
-                router.push({path: "/login"});
-            })
-        }
-        logincheck();
-    return {};
+      axios.post('/api/members/logincheck').then((res)=>{
+        console.log(res);
+        //성공적으로 로그인
+        state.id = res.data.id;
+        }).catch(()=>{
+          router.push({path: "/login"});
+        })
+    }
+    logincheck();
+    
+    const load=()=>{
+      axios.get('/api/mypage/read').then((res)=>{
+        console.log(res.data);
+        state.order = res.data;
+      })
+    }
+    load();
+
+    
+    const handleDetail = (no,id) => {
+      router.push({path:'/mypage/mypage/detail', query:{no:no,id:id}})
+    }
+    return {state, handleDetail};
   },
 
   

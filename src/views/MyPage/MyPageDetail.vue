@@ -1,4 +1,5 @@
 <template>
+  {{ state }}
     <div id="mypage_wrap">
       <div id="left_bar">
         <div id="profile_area">
@@ -109,9 +110,30 @@
   </template>
   
   <script>
+import { reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
   export default {
     setup() {
-      return {};
+      const route = useRoute();
+
+      const state = reactive({
+        no: Number(route.query.no),
+        id: Number(route.query.id),
+        order:""
+      });
+
+      const load=() =>{
+        axios.get(`/api/mypage/read/detail?no=${state.no}&id=${state.id}`).then((res)=>{
+          console.log(res.data);
+          state.order = res.data;
+        })
+      };
+      load();
+
+
+
+      return {state};
     },
   };
   </script>
