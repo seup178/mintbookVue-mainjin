@@ -12,12 +12,12 @@
         </div>
         <div id="menu_area">
           <ul>
-            <li><a href="/mypage/mypage">구매내역</a></li>
+            <li><a href="/mypage/mypage" id="current">구매내역</a></li>
             <li><a href="/mypage/mypick">찜</a></li>
             <li><a href="/mypage/cashpoint">캐시/포인트</a></li>
             <li><a href="/mypage/inquire">1:1 문의내역</a></li>
             <li><a href="/mypage/review/list">리뷰내역</a></li>
-            <li><a href="/mypage/alimi" id="current">알리미</a></li>
+            <li><a href="/mypage/alimi">알리미</a></li>
             <li><a href="/mypage/myinfoedit">회원정보수정</a></li>
         </ul>
         </div>
@@ -35,14 +35,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr >
-              <td>1</td>
+            <tr v-for="(orders,tmp) in state.order.orders" :key="tmp">
+              <td>{{ orders.id }}</td>
               <td>
-                <span>방주</span><br>
+                <span>{{ orders.cartId }}</span><br>
                 <span style="color: #919191;">유키 하루오지음,김은모</span>
               </td>
-              <td>1</td>
-              <td>14,500원</td>
+              <td>{{ orders.quantity }}</td>
+              <td>{{ orders.price }}</td>
             </tr>
           </tbody>
         </table>
@@ -52,13 +52,13 @@
           <tbody>
                 <tr>
                     <th scope="row">주문자명</th>
-                    <td>홍길동</td>
+                    <td>{{ state.order.buyer }}</td>
                     <th scope="row">수령자명</th>
-                    <td>김철수</td>
+                    <td>{{ state.order.buyer }}</td>
                 </tr>
                 <tr>
                     <th scope="row">배송지</th>
-                    <td colspan="3">부산광역시 부산진구 중앙대로 668 (A1프라자6층)</td>
+                    <td colspan="3">{{ state.order.buyerAddress }}</td>
                 </tr>
                 <tr>
                     <th scope="row">전화번호</th>
@@ -68,13 +68,13 @@
                 </tr>
                 <tr>
                     <th scope="row">주문번호</th>
-                    <td>001-1295-10123-A1234956</td>
+                    <td>{{ state.order.orderNum }}</td>
                     <th scope="row">배송방법</th>
                     <td>택배</td>
                 </tr>
                 <tr>
                     <th scope="row">주문접수일</th>
-                    <td colspan="3">2023년 03월 31일 금 11시 44분</td>
+                    <td colspan="3">{{ state.order.orderDate }}</td>
                 </tr>
                 <tr>
                     <th scope="row" style="height: 100px;">상태</th>
@@ -91,7 +91,7 @@
             <tbody>
                 <tr>
                     <th scope="row">총주문 금액</th>
-                    <td colspan="3">34,000원(상품가격 34,000원 + 배송료 0원)</td>
+                    <td colspan="3">{{ state.order.price}}원(상품가격 {{ state.order.price}}원 + 배송료 0원)</td>
                 </tr>
                 <tr>
                     <th scope="row">실 결제금액</th>
@@ -120,7 +120,7 @@ import axios from 'axios';
       const state = reactive({
         no: Number(route.query.no),
         id: Number(route.query.id),
-        order:""
+       
       });
 
       const load=() =>{

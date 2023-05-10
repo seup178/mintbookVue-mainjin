@@ -1,5 +1,4 @@
 <template>
-    {{ state }}
     <div id="total_wrap">
         <div id="divide_wrap">
             <div id="nav_wrap">
@@ -13,25 +12,25 @@
                     <tbody>
                         <tr>
                             <th scope="row">아이디</th>
-                            <td >{{state.member.email}}</td>
+                            <td >{{state.member.member.email}}</td>
                             <th scope="row">이름</th>
-                            <td >{{ state.member.name }}</td>
+                            <td >{{ state.member.member.name }}</td>
                         </tr>
                         <tr>
                             <th scope="row">주소</th>
-                            <td colspan="3">{{ state.member.address }}</td>
+                            <td colspan="3">{{ state.member.member.address }}</td>
                         </tr>
                         <tr>
                             <th scope="row">이메일</th>
-                            <td >{{ state.member.email }}</td>
+                            <td >{{ state.member.member.email }}</td>
                             <th scope="row">휴대폰번호</th>
-                            <td >{{ state.member.phone }}</td>
+                            <td >{{ state.member.member.phone }}</td>
                         </tr>
                         <tr>
                             <th scope="row">성별</th>
-                            <td >{{ state.member.gender }}</td>
+                            <td >{{ state.member.member.gender }}</td>
                             <th scope="row">가입일</th>
-                            <td >{{ state.member.joinDate }}</td>
+                            <td >{{ state.member.member.joinDate }}</td>
                         </tr>
                         
                     </tbody>
@@ -47,35 +46,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td> 2023-02-21</td>
-                            <td>1023013131512211</td>
-                            <td>방주 외 2권</td>
-                            <td>112594012349</td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td> 2023-02-21</td>
-                            <td>1023013131512211</td>
-                            <td>방주 외 2권</td>
-                            <td>112594012349</td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td> 2023-02-21</td>
-                            <td>1023013131512211</td>
-                            <td>방주 외 2권</td>
-                            <td>112594012349</td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td> 2023-02-21</td>
-                            <td>1023013131512211</td>
-                            <td>방주 외 2권</td>
-                            <td>112594012349</td>
+                        <tr v-for="(orders,tmp) in state.member.orders" :key="tmp">
+                            <td>{{ orders.orderDate }}</td>
+                            <td>{{ orders.orderNum }}</td>
+                            <td>{{ orders.product }}</td>
+                            <td>{{ orders.orderNum }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -140,11 +115,12 @@ export default {
 
         const state = reactive({
             no  : Number( route.query.no ),
-            member:""
+            member:"",
+            email:String(route.query.email),
         })
 
         const load=() =>{
-          axios.get(`/api/member/detail?no=${state.no}`).then((res)=>{
+          axios.get(`/api/member/detail?no=${state.no}&email=${state.email}`).then((res)=>{
             console.log(res.data);
             state.member = res.data;
           })

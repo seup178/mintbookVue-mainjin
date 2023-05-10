@@ -28,7 +28,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(member,tmp) in state.member" :key="tmp" style="cursor: pointer;" @click="handleDetail(member.id)">
+            <tr v-for="(member,tmp) in state.member" :key="tmp" style="cursor: pointer;" @click="handleDetail(member.id,member.email)">
               <th scope="row">{{ (tmp+1)+((board.page-1)*10) }}</th>
               <td>{{ member.email }}</td>
               <td>{{ member.name }}</td>
@@ -107,8 +107,8 @@ export default {
       })  
     }
 
-    const handleDetail = (no) => {
-      router.push({path:'/admin/member/detail', query:{no:no}})
+    const handleDetail = (no,email) => {
+      router.push({path:'/admin/member/detail', query:{no:no,email:email}})
     }
 
 
