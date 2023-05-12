@@ -1,5 +1,4 @@
 <template>
-    {{ state }}
     <div id="total_wrap">
         <div id="divide_wrap">
             <div id="nav_wrap">

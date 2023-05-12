@@ -1,5 +1,4 @@
 <template>
-  {{ state }}
     <div id="mypage_wrap">
       <div id="left_bar">
         <div id="profile_area">
@@ -35,7 +34,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(orders,tmp) in state.order.orders" :key="tmp">
+            <tr v-for="(orders,tmp) in state.order.orderss" :key="tmp">
               <td>{{ orders.id }}</td>
               <td>
                 <span>{{ orders.cartId }}</span><br>
@@ -120,11 +119,11 @@ import axios from 'axios';
       const state = reactive({
         no: Number(route.query.no),
         id: Number(route.query.id),
-       
+        num: String(route.query.num),
       });
 
       const load=() =>{
-        axios.get(`/api/mypage/read/detail?no=${state.no}&id=${state.id}`).then((res)=>{
+        axios.get(`/api/mypage/read/detail?no=${state.no}&id=${state.id}&num=${state.num}`).then((res)=>{
           console.log(res.data);
           state.order = res.data;
         })

@@ -48,7 +48,7 @@
                 <textarea
                   name=""
                   id=""
-                  placeholder=""
+                  placeholder="답변 준비중"
                   v-model="state.qna.reply"
                   readonly
                 ></textarea>

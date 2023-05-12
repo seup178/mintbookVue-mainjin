@@ -1,5 +1,4 @@
 <template>
-  {{ state }}
   <div id="mypage_wrap">
     <div id="left_bar">
       <div id="profile_area">
@@ -36,7 +35,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item,idx) in state.order" @click="handleDetail(item.id,state.id)" :key="idx">
+          <tr v-for="(item,idx) in state.order" @click="handleDetail(item.id,state.id,item.orderNum)" :key="idx">
             <td>{{ item.orderDate }}</td>
             <td>{{ item.orderNum }}</td>
             <td>{{ item.price }}</td>
@@ -86,8 +85,8 @@ export default {
     load();
 
     
-    const handleDetail = (no,id) => {
-      router.push({path:'/mypage/mypage/detail', query:{no:no,id:id}})
+    const handleDetail = (no,id,num) => {
+      router.push({path:'/mypage/mypage/detail', query:{no:no,id:id,num:num}})
     }
     return {state, handleDetail};
   },

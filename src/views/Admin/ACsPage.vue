@@ -1,5 +1,4 @@
 <template>
-    {{ state }}
     <div id="total_wrap">
         <div id="divide_wrap">
             <div id="nav_wrap">
@@ -33,8 +32,8 @@
                             <td>{{ item.qnaTitle }}</td>
                             <td>{{ item.writer }}</td>
                             <td>{{ item.reg_date }}</td>
-                            <td v-if="item.reply != null">완료</td>
-                            <td v-else >대기중</td>
+                            <td v-if="item.reply != null">답변 완료</td>
+                            <td v-else >답변 대기중</td>
                             
                         </tr>
                     </tbody>

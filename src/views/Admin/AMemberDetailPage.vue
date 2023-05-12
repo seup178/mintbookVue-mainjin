@@ -73,26 +73,6 @@
                         </tr>
                     </tbody>
                 </table>
-
-                <p>캐시 내역</p>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>충전/사용 날짜</th>
-                            <th>금액</th>
-                            <th>충전/사용</th>
-                            <th>사용한 주문번호</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td> 2023-02-21</td>
-                            <td>2000</td>
-                            <td>사용</td>
-                            <td>112594012349</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
