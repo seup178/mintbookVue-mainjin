@@ -309,8 +309,8 @@ export default {
     const store = useStore();
 
     const state = reactive({
-      naverClientId: "s2_0TqYXnDl1103HW2v0",
-      naverclientSecret: "vt8HIcNJei",
+      //naverClientId: "클라이언트 아이디 넣으세요",
+      //naverclientSecret: "클라이언트 시크릿 넣으세요",
       navercode: route.query.code, //네이버 로그인 인증에 성공하면 반환받는 인증 코드, 접근 토큰(access token) 발급에 사용
       naverstates: route.query.state, //사이트 간 요청 위조 공격을 방지하기 위해 애플리케이션에서 생성한 상태 토큰으로 URL 인코딩을 적용한 값
       naver_access_token: "",

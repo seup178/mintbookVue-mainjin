@@ -440,4 +440,4 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: auto;
 }
 /* 생년월일 input박스 클릭시 달력 나오도록 end*/
-</style>
+</style> 

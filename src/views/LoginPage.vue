@@ -78,7 +78,7 @@ export default {
         password: "",
       },
       modalState: 0, // 1: pw찾기 모달창 open,
-      naverClientId: "s2_0TqYXnDl1103HW2v0",
+      // naverClientId: "네이버 client id 넣으세요",
       naverCallbackUrl: "http://localhost:8080",
       naverstates: Math.random().toString(36).slice(2, 11),
       emailForPw: "",
