@@ -17,12 +17,8 @@
         </li>
         <li>
           <div id="search_wrap">
-            <input
-              type="text"
-              v-model="state.searchtext"
-              placeholder="2023 부커상 후보! 천명관 <고래>"
-            />
-            <img src="../assets/Navigation/search.png" alt="search" />
+            <input type="text" v-model="state.searchtext" placeholder="2023 부커상 후보! 천명관 <고래>" @keyup.enter="handleSearch()"/>
+            <img src="../assets/Navigation/search.png" alt="search" @click="handleSearch()">
           </div>
         </li>
       </ul>
@@ -62,40 +58,40 @@
       </div>
       <div id="modal_content_wrap">
         <ul class="categorylist">
-          <li>소설</li>
-          <li>시/에세이</li>
-          <li>인문</li>
-          <li>가정/육아</li>
-          <li>요리</li>
-          <li>건강</li>
+          <li @click="handleGenre1(1)">소설</li>
+          <li @click="handleGenre1(2)">시/에세이</li>
+          <li @click="handleGenre1(3)">인문</li>
+          <li @click="handleGenre1(4)">가정/육아</li>
+          <li @click="handleGenre1(5)">요리</li>
+          <li @click="handleGenre1(6)">건강</li>
         </ul>
         <ul class="categorylist">
-          <li>취미/실용/스포츠</li>
-          <li>경제/경영</li>
-          <li>자기계발</li>
-          <li>정치/사회</li>
-          <li>역사/문화</li>
-          <li>종교</li>
+          <li @click="handleGenre1(7)">취미/실용/스포츠</li>
+          <li @click="handleGenre1(8)">경제/경영</li>
+          <li @click="handleGenre1(9)">자기계발</li>
+          <li @click="handleGenre1(10)">정치/사회</li>
+          <li @click="handleGenre1(11)">역사/문화</li>
+          <li @click="handleGenre1(12)">종교</li>
         </ul>
         <ul class="categorylist">
-          <li>예술/대중문화</li>
-          <li>중/고등참고서</li>
-          <li>기술/공학</li>
-          <li>외국어</li>
-          <li>과학</li>
-          <li>취업/수험서</li>
+          <li @click="handleGenre1(13)">예술/대중문화</li>
+          <li @click="handleGenre1(14)">중/고등참고서</li>
+          <li @click="handleGenre1(15)">기술/공학</li>
+          <li @click="handleGenre1(16)">외국어</li>
+          <li @click="handleGenre1(17)">과학</li>
+          <li @click="handleGenre1(18)">취업/수험서</li>
         </ul>
         <ul class="categorylist">
-          <li>여행</li>
-          <li>컴퓨터/IT</li>
-          <li>잡지</li>
-          <li>청소년</li>
+          <li @click="handleGenre1(19)">여행</li>
+          <li @click="handleGenre1(20)">컴퓨터/IT</li>
+          <li @click="handleGenre1(21)">잡지</li>
+          <li @click="handleGenre1(22)">청소년</li>
         </ul>
         <ul class="categorylist" id="menulist">
-          <li>베스트셀러</li>
-          <li>이 주의 신간</li>
-          <li>에디터's PICK</li>
-          <li>이벤트</li>
+          <li><router-link to="/bestseller">베스트셀러</router-link></li>
+          <li><router-link to="/new">이 주의 신간</router-link></li>
+          <li><router-link to="/editorpick">에디터's PICK</router-link></li>
+          <li><router-link to="/event">이벤트</router-link></li>
         </ul>
       </div>
     </div>
@@ -129,6 +125,15 @@ export default {
       state.modalOpen = !state.modalOpen;
     };
 
+    const handleSearch=()=>{
+      state.searchtext=state.searchtext.trim();
+      router.push({path:'/search', query:{searchTerm:state.searchtext}});
+    }
+
+    const handleGenre1=(tmp)=>{
+      router.push({path:'/category', query:{genre:tmp}});
+    }
+
     //로그아웃
     const logout = async () => {
       await axios
@@ -153,6 +158,8 @@ export default {
       state,
       setModal,
       logout,
+      handleSearch,
+      handleGenre1
     };
   },
 };

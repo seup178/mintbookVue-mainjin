@@ -7,38 +7,38 @@
           <ul>
             <li>
               <label>•</label>
-              <a href="*"> 베스트셀러</a>
+              <a href="/bestseller"> 베스트셀러</a>
             </li>
             <li>
               <label>•</label>
-              <a href="*"> 이 주의 신간</a>
+              <a href="/new"> 이 주의 신간</a>
             </li>
             <li>
               <label>•</label>
-              <a href="*"> 에디터's PICK</a>
+              <a href="/editorpick"> 에디터's PICK</a>
             </li>
             <li>
               <label>•</label>
-              <a href="*"> 이벤트</a>
+              <a href="/event"> 이벤트</a>
             </li>
           </ul>
         </div>
         <div id="slider_wrap">
           <el-carousel height="407px">
             <el-carousel-item>
-              <img src="../assets/MainPage/slide1.png" alt="slide1" />
+              <router-link to="/event/detail?no=1"><img src="../assets/MainPage/slide1.png" alt="slide1"/></router-link>
             </el-carousel-item>
             <el-carousel-item>
-              <img src="../assets/MainPage/slide2.png" alt="slide2" />
+              <router-link to="/event/detail?no=2"><img src="../assets/MainPage/slide2.png" alt="slide2"/></router-link>
             </el-carousel-item>
             <el-carousel-item>
-              <img src="../assets/MainPage/slide3.png" alt="slide3" />
+              <router-link to="/event/detail?no=3"><img src="../assets/MainPage/slide3.png" alt="slide3"/></router-link>
             </el-carousel-item>
           </el-carousel>
         </div>
         <div id="notice_wrap">
           <div>공지사항</div>
-          <div>MintBook 서버 검점 안내(4/17)</div>
+          <div v-if="state.notice.content && state.notice.content.length > 0" @click="handleNoticeContent(state.notice.content[0].id)" id="noticetop">{{ state.notice.content[0].title }}</div>
         </div>
       </header>
       <section>
@@ -51,114 +51,20 @@
               <li class="content_text">베스트셀러</li>
             </ul>
             <div class="content_right">
-              <label>더보기+</label>
+              <label><router-link to="/bestseller">더보기+</router-link></label>
             </div>
           </div>
           <div class="content_bottom">
-            <div class="content_book_wrap">
-              <p class="c_ranking">01.</p>
-              <img
-                src="../assets/MainPage/book1.jpg"
-                alt="book1"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">02.</p>
-              <img
-                src="../assets/MainPage/book2.jpg"
-                alt="book2"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">03.</p>
-              <img
-                src="../assets/MainPage/book3.jpg"
-                alt="book3"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">04.</p>
-              <img
-                src="../assets/MainPage/book4.jpg"
-                alt="book4"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">05.</p>
-              <img
-                src="../assets/MainPage/book5.jpg"
-                alt="book5"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">06.</p>
-              <img
-                src="../assets/MainPage/book1.jpg"
-                alt="book1"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">07.</p>
-              <img
-                src="../assets/MainPage/book2.jpg"
-                alt="book2"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">08.</p>
-              <img
-                src="../assets/MainPage/book3.jpg"
-                alt="book3"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">09.</p>
-              <img
-                src="../assets/MainPage/book4.jpg"
-                alt="book4"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <p class="c_ranking">10.</p>
-              <img
-                src="../assets/MainPage/book5.jpg"
-                alt="book5"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
+            <div class="content_book_wrap" v-for="(tmp, idx) in state.bestseller.content" :key="idx">
+              <p class="c_ranking">{{ idx+1 }}.</p>
+              <img :src="tmp.img" alt="book1" class="c_image" @click="handleContent(tmp.id, tmp.genre)">
+              <p class="c_title">{{ tmp.bookName }}</p>
+              <p class="c_author">{{tmp.author}}·{{ tmp.publisher }}</p>
             </div>
           </div>
         </div>
         <div class="ad_wrap">
-          <img src="../assets/MainPage/ad1.jpg" alt="ad1" />
+          <router-link to="/event/detail?no=1"><img src="../assets/MainPage/ad1.jpg" alt="ad1" class="ad"/></router-link>
         </div>
         <div class="content_wrap">
           <div class="content_top">
@@ -169,59 +75,19 @@
               <li class="content_text">이 주의 신간</li>
             </ul>
             <div class="content_right">
-              <label>더보기+</label>
+              <label><router-link to="/new">더보기+</router-link></label>
             </div>
           </div>
           <div class="content_bottom">
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book1.jpg"
-                alt="book1"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book2.jpg"
-                alt="book2"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book3.jpg"
-                alt="book3"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book4.jpg"
-                alt="book4"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book5.jpg"
-                alt="book5"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
+            <div class="content_book_wrap" v-for="(tmp, idx) in state.new.content" :key="idx">
+              <img :src="tmp.img" alt="book1" class="c_image" @click="handleContent(tmp.id, tmp.genre)">
+              <p class="c_title" @click="handleContent(tmp.id, tmp.genre)">{{ tmp.bookName }}</p>
+              <p class="c_author">{{tmp.author}}·{{ tmp.publisher }}</p>
             </div>
           </div>
         </div>
         <div class="ad_wrap">
-          <img src="../assets/MainPage/ad2.jpg" alt="ad2" />
+          <router-link to="/event/detail?no=5"><img src="../assets/MainPage/ad2.jpg" alt="ad2" class="ad"/></router-link>
         </div>
         <div class="content_wrap">
           <div class="content_top">
@@ -236,54 +102,14 @@
               <li class="content_text">에디터's PICK</li>
             </ul>
             <div class="content_right">
-              <label>더보기+</label>
+              <label><router-link to="/editorpick">더보기+</router-link></label>
             </div>
           </div>
           <div class="content_bottom">
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book1.jpg"
-                alt="book1"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book2.jpg"
-                alt="book2"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book3.jpg"
-                alt="book3"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book4.jpg"
-                alt="book4"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
-            </div>
-            <div class="content_book_wrap">
-              <img
-                src="../assets/MainPage/book5.jpg"
-                alt="book5"
-                class="c_image"
-              />
-              <p class="c_title">세이노의 가르침</p>
-              <p class="c_author">세이원·데이원</p>
+            <div class="content_book_wrap" v-for="(tmp, idx) in state.editor.content" :key="idx">
+              <img :src="tmp.bookid.img" alt="book1" class="c_image" @click="handleContent(tmp.id, tmp.genre)">
+              <p class="c_title" @click="handleContent(tmp.id, tmp.genre)">{{ tmp.bookid.bookName }}</p>
+              <p class="c_author">{{ tmp.bookid.author }}·{{ tmp.bookid.publisher }}</p>
             </div>
           </div>
         </div>
@@ -322,6 +148,10 @@ export default {
       birth: "",
       email: "",
       snsType: "",
+      bestseller:[],
+      new:[],
+      editor:[],
+      notice:[]
     });
 
     // NAVER 콜백 받는 로직
@@ -469,11 +299,66 @@ export default {
         });
     };
 
+
+    const bestseller=()=>{
+      axios.get('/api/get/bestseller').then(({data})=>{
+        console.log("best",data);
+        state.bestseller=data;
+      }).catch(()=>{
+        alert('에러가 발생했습니다.');
+      });
+    }
+
+    const mainNew=()=>{
+      axios.get('/api/get/main/new').then(({data})=>{
+        console.log("new",data);
+        state.new=data;
+      }).catch(()=>{
+        alert('에러가 발생했습니다.');
+      });
+    }
+
+    const mainEditor=()=>{
+      axios.get('/api/get/main/editor').then(({data})=>{
+        console.log("editor",data);
+        state.editor=data;
+      }).catch(()=>{
+        alert('에러가 발생했습니다.');
+      });
+    }
+
+    const handleContent=(tmp1, tmp2)=>{
+      router.push({path:'/book', query:{no:tmp1, genre:tmp2}})
+    }
+
+    const handleNotice=()=>{
+      axios.get('/api/notice/get/main').then(({data})=>{
+        console.log("handleNotice",data);
+        state.notice = data;
+      }).catch(()=>{
+        alert('에러가 발생했습니다.');
+      });
+    }
+
+    const handleNoticeContent=(tmp)=>{
+      router.push({path:'/notice/detail', query:{no:tmp}});
+    }
+
+    bestseller();
+    mainNew();
+    mainEditor();
+    handleNotice();
+
+
+
+
     onMounted(() => {
       naverCallback();
     });
     return {
       state,
+      handleContent,
+      handleNoticeContent
     };
   },
 };
